@@ -5,6 +5,27 @@
         <script src="script.js" defer></script>
     </head>
     <body>
-        
+        <canvas id="myCanvas"></canvas>
+        <div class="modifiers">
+            <div class="slider">
+                <label for="iter">Iterations</label>
+                <input type="range" min="1000" max="50000" value="5000", id="iter">
+            </div>
+            <div class="slider">
+                <label for="slider">Size</label>
+                <input type="range" min="2" max="30" value="4", id="slider">
+            </div>
+                <div class="backgroundColorPicker">
+                <label for="colourPicker">Background Colour</label>
+                <input type="color" id="colourPicker" value="#000000">
+            </div>
+            <div class="plotColor">
+                <label for="plotColor">Plot Colour</label>
+                <input type="color" id="plotColor" value="#FFFFFF">
+                <label for="ICH">Instant Colour Change</label>
+                <input type="checkbox" name="instantColoyrChange" id="ICH" checked>
+            </div>
+            <button id="reset">Reset Canvas</button>
+        </div>
     </body>
 </html>
