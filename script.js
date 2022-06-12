@@ -6,15 +6,34 @@ const slider = document.querySelector("#slider")
 const itSlider = document.querySelector("#iter")
 const instantColourChange = document.querySelector("#ICH")
 let totalIterations = itSlider.value
-let allPoints = []
 let size = 2
 let plotColor = ""
 let CanvasWidth = 0
 let CanvasHeight = 0
-let point1 = [100, CanvasHeight-100]
-let point2 = [CanvasWidth-100,CanvasHeight-100]
-let point3 = [CanvasWidth/2,100]
-let startingPoints = [point1,point2,point3]
+let selected = "triangle"
+let startingPoints = []
+let initialPoints = []
+function initialize() {
+    window.addEventListener("resize",resize)
+    resetBtn.addEventListener("click",reset)
+    bgColorPicker.addEventListener("input", changeBackground)
+    plotColorPicker.addEventListener("input", changePlotColor)
+    slider.addEventListener("input", changeSize)
+    itSlider.addEventListener("input", ChangeIterations)
+    canvas.addEventListener("mousedown",getCursorPosition)
+    resize()
+    changeBackground()
+    changePlotColor()
+    plotIntialPoints()
+    if(selected=="triangle") {
+        let point1 = [100, CanvasHeight-100]
+        let point2 = [CanvasWidth-100,CanvasHeight-100]
+        let point3 = [CanvasWidth/2,100]
+        startingPoints = [point1,point2,point3]
+    }
+    
+}
+
 function padZero(str, len=2) {
     var zeroes = new Array(len).join('0')
     return (zeroes + str).slice(-len)
@@ -37,7 +56,6 @@ function getPoint(Nx, Ny) {
 
 function collinear(x1, y1, x2, y2, x3, y3) {
     const a = x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)
-    // console.log(`yes ${a} ${x1}, ${y1}, ${x2}, ${y2}, ${x3}, ${y3}`)
     return a == 0
 }
 
@@ -91,9 +109,7 @@ function getCursorPosition(e) {
     const rect = canvas.getBoundingClientRect()
     let x = e.clientX - rect.left
     let y = e.clientY - rect.top
-    // points = getPoints(3,x,y)
-    // plotIntialPoints()
-    
+    initialPoints.push([x,y])
     plotPoints(x,y,totalIterations)
 }
 
@@ -107,13 +123,10 @@ function plotPoints(x,y,noOfIterations) {
         x = (startingPoints[die][0] + x)/2
         y = (startingPoints[die][1] + y)/2
         plotThePoint(x,y, plotColor)
-        allPoints.push([x,y])
     }
     
 }
 function plotIntialPoints() {
-    allPoints = []
-    allPoints.push(...startingPoints)
     for (let i in startingPoints) {
         plotThePoint(startingPoints[i][0], startingPoints[i][1],"#00FF00")
     }
@@ -127,17 +140,14 @@ function resize(e) {
     point2 = [CanvasWidth-100,CanvasHeight-100]
     point3 = [CanvasWidth/2,100]
     startingPoints = [point1,point2,point3]
-    if (allPoints.length>5) {
-        plotPoints(allPoints[0][0], allPoints[0][1], totalIterations)
-    }
+    rePlot()
 }
 
 function reset(clearPoints=true) {
-    canvas.addEventListener("mousedown",getCursorPosition)
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height);
     if(clearPoints) {
-        allPoints = []
+        initialPoints = []
     }
     plotIntialPoints()
 } 
@@ -164,29 +174,11 @@ function ChangeIterations(e) {
 }
 
 function rePlot(noOfIterations = totalIterations) {
-    if(allPoints.length<5) {
-        plotIntialPoints()
-        return
-    }
     reset(false)
-    const N = allPoints.length
-    let oldPoints = Math.min(noOfIterations, N)
-    for(let i = 0; i<oldPoints;++i) {
-        plotThePoint(allPoints[i][0], allPoints[i][1],plotColor)
-    }
-    if(noOfIterations>N) {
-        plotPoints(allPoints[N-1][0], allPoints[N-1][1], noOfIterations - oldPoints)
+    let noOfInitialPoints = initialPoints.length
+    for(let i=0;i<noOfInitialPoints;++i) {
+        plotPoints(initialPoints[i][0], initialPoints[i][1], noOfIterations)
     }
 }
 
-window.addEventListener("resize",resize)
-resetBtn.addEventListener("click",reset)
-bgColorPicker.addEventListener("input", changeBackground)
-plotColorPicker.addEventListener("input", changePlotColor)
-slider.addEventListener("input", changeSize)
-itSlider.addEventListener("input", ChangeIterations)
-reset()
-resize()
-changeBackground()
-changePlotColor()
-plotIntialPoints()
+initialize()
