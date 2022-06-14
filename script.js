@@ -5,6 +5,9 @@ const plotColorPicker = document.querySelector("#plotColor")
 const slider = document.querySelector("#slider")
 const itSlider = document.querySelector("#iter")
 const instantColourChange = document.querySelector("#ICH")
+const help = document.querySelector("#help")
+const close = document.querySelector(".close")
+const instructions = document.querySelector(".modal")
 let totalIterations = itSlider.value
 let size = 2
 let plotColor = ""
@@ -21,6 +24,8 @@ function initialize() {
     slider.addEventListener("input", changeSize)
     itSlider.addEventListener("input", ChangeIterations)
     canvas.addEventListener("mousedown",getCursorPosition)
+    help.addEventListener("click", showHelp)
+    close.addEventListener("click", hideHelp)
     resize()
     changeBackground()
     changePlotColor()
@@ -32,6 +37,15 @@ function initialize() {
         startingPoints = [point1,point2,point3]
     }
     
+}
+
+function showHelp(e) {
+    instructions.style.display = "block"
+    console.log("Shown")
+}
+
+function hideHelp(e) {
+    instructions.style.display = "none"
 }
 
 function padZero(str, len=2) {

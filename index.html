@@ -7,6 +7,20 @@
     <body>
         <canvas id="myCanvas"></canvas>
         <div class="modifiers">
+            <span id="help">&#63;</span>
+            <div id="myModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h1>How this works</h1>
+                    <ul>
+                        <li>Any 3 points, not in straight line is selected</li>
+                        <li>now user has to select a starting point to form a design patern (Click anywhere on canvas)</li>
+                        <li><a href="https://en.wikipedia.org/wiki/Sierpi%C5%84ski_triangle#Chaos_game">Sierpiński triangle
+                        </a></li>
+                        <li><a href="https://youtu.be/kbKtFN71Lfs">Numberphile Youtube Video</a></li>
+                    </ul>
+                </div>
+            </div>
             <div class="slider">
                 <label for="iter">Iterations</label>
                 <input type="range" min="1000" max="50000" value="5000", id="iter">
@@ -14,8 +28,7 @@
             <div class="slider">
                 <label for="slider">Size</label>
                 <input type="range" min="2" max="30" value="4", id="slider">
-            </div>
-                <div class="backgroundColorPicker">
+            <div class="backgroundColorPicker">
                 <label for="colourPicker">Background Colour</label>
                 <input type="color" id="colourPicker" value="#000000">
             </div>
